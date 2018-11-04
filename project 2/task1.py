@@ -1,6 +1,11 @@
+UBIT = 'hparthas'
+
 import cv2
 from matplotlib import pyplot as plt
 import numpy as np
+import random 
+np.random.seed(sum(ord(c) for c in UBIT)) 
+
 def warpTwoImages(img1, img2, H):
     '''warp img2 to img1 with homograph H'''
     h1,w1 = img1.shape[:2]
@@ -50,7 +55,7 @@ for m,n in matches:
         good_filter.append((m))
 
 img3 = cv2.drawMatchesKnn(m1_clr,keypoints_mountain1,m2_clr,keypoints_mountain2,good_knnmatch,None,flags=2)
-cv2.imwrite("output/task1/sift_knn.jpg",img3)
+cv2.imwrite("output/task1/task1_matches_knn.jpg",img3)
 
 src_pts = np.float32([ keypoints_mountain1[m[0].queryIdx].pt for m in good_knnmatch ]).reshape(-1,1,2)
 dst_pts = np.float32([ keypoints_mountain2[m[0].trainIdx].pt for m in good_knnmatch ]).reshape(-1,1,2)
@@ -62,11 +67,22 @@ h,w,d = m1_clr.shape
 pts = np.float32([ [0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
 dst = cv2.perspectiveTransform(pts,M)
 
-draw_params = dict(matchColor = (0,255,0), # draw matches in green color
+selected_matches = [0] * len(matchesMask)
+matches_count = 0 
+while  matches_count < 10 :
+    select_index = np.random.randint(0,len(matchesMask))
+    if selected_matches[select_index] == 0 and matchesMask[select_index] == 1:
+        selected_matches[select_index] = 1
+        matches_count =matches_count+1
+
+draw_params = dict(matchColor = (255,0,0), 
                    singlePointColor = None,
-                   matchesMask = matchesMask, # draw only inliers
+                   matchesMask = selected_matches, 
                    flags = 2)
-img3 = cv2.drawMatches(mountain1,keypoints_mountain1,mountain2,keypoints_mountain2,good_filter,None,**draw_params)
+
+img3 = cv2.drawMatches(m1_clr,keypoints_mountain1,m2_clr,keypoints_mountain2,good_filter,None,**draw_params)
+
+cv2.imwrite("output/task1/task1_matches.jpg",img3)
 im_out =warpTwoImages(m2_clr,m1_clr,np.linalg.inv(M))
 
 cv2.imwrite("output/task1/task1_pano.jpg",im_out)
