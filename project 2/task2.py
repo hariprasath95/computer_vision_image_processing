@@ -69,7 +69,7 @@ img1_lines = cv2.computeCorrespondEpilines(selected_point1.reshape(-1, 1, 2), 2,
 img1_lines = img1_lines.reshape(-1, 3)
 img1_lines1,image1_lines2 = drawlines(m1_clr,m2_clr,img1_lines,selected_point1,selected_point2,colors)
 
-img2_lines = cv2.computeCorrespondEpilines(selected_point1.reshape(-1, 1, 2), 2, fundamentalmat)
+img2_lines = cv2.computeCorrespondEpilines(selected_point2.reshape(-1, 1, 2), 2, fundamentalmat)
 img2_lines = img1_lines.reshape(-1, 3)
 img2_lines1,image2_lines2 = drawlines(m2_clr,m1_clr,img2_lines,selected_point2,selected_point1,colors)
 

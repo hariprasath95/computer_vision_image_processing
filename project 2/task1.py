@@ -14,8 +14,8 @@ def warpTwoImages(img1, img2, H):
     pts2 = np.float32([[0,0],[0,h2],[w2,h2],[w2,0]]).reshape(-1,1,2)
     pts2_ = cv2.perspectiveTransform(pts2, H)
     pts = np.concatenate((pts1, pts2_), axis=0)
-    [xmin, ymin] = np.int32(pts.min(axis=0).ravel())
-    [xmax, ymax] = np.int32(pts.max(axis=0).ravel())
+    [xmin, ymin] = np.int32(pts.min(axis=0).ravel() + 20)
+    [xmax, ymax] = np.int32(pts.max(axis=0).ravel() + 20)
 
     Ht = np.array([[1,0,-xmin],[0,1,-ymin],[0,0,1]]) # translate
     Ht1 = Ht.dot(H)
