@@ -50,7 +50,6 @@ def computer_kmeans(points,num_clusters,iterns,centeroids = None):
         else:
             flag = True
         centeroids = new_centeroids
-    print(len(min_values))
     return centeroids, min_values
 
 baboon_image = cv2.imread("data/baboon.jpg")

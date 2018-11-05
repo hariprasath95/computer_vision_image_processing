@@ -6,24 +6,6 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
 COLORS = ["red","green","blue"]
 def plot_cov_ellipse(cov, pos, nstd=2, ax=None, **kwargs):
-    """
-    Plots an `nstd` sigma error ellipse based on the specified covariance
-    matrix (`cov`). Additional keyword arguments are passed on to the 
-    ellipse patch artist.
-    Parameters
-    ----------
-        cov : The 2x2 covariance matrix to base the ellipse on
-        pos : The location of the center of the ellipse. Expects a 2-element
-            sequence of [x0, y0].
-        nstd : The radius of the ellipse in numbers of standard deviations.
-            Defaults to 2 standard deviations.
-        ax : The axis that the ellipse will be plotted on. Defaults to the 
-            current axis.
-        Additional keyword arguments are pass on to the ellipse patch.
-    Returns
-    -------
-        A matplotlib ellipse artist
-    """
     def eigsorted(cov):
         vals, vecs = np.linalg.eigh(cov)
         order = vals.argsort()[::-1]
@@ -70,7 +52,7 @@ def compute_gmm(K,pi_value,mean,co_variance,num_iterns,showplot,points):
         pi_value = new_pi_value
         mean = new_mu_value
         co_variance = new_cov_value
-        print("iteration",i,'\n')
+        print("iteration",i+1)
         if(showplot):
             plt.clf()
             for j,x in enumerate(input_array):

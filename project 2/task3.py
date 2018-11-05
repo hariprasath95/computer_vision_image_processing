@@ -5,19 +5,17 @@ import random
 import sys
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+np.random.seed(sum([ord(c) for c in UBIT]))
 COLORS = ["red","green","blue"]
-def plot_points(points,clusters,marker,text=True):
+def plot_points(points,clusters,marker):
     for i,x in enumerate(points):
         plt.scatter(x[0], x[1], edgecolor=COLORS[clusters[i]-1], facecolor='white', linewidth='1', marker=marker)
-        if text:
-            plt.text(x[0]+0.03, x[1]-0.05, "("+str(x[0])+","+str(x[1])+")", color=COLORS[clusters[i]-1], fontsize='small')
+        plt.text(x[0]+0.03, x[1]-0.05, "("+str(x[0])+","+str(x[1])+")", color=COLORS[clusters[i]-1], fontsize='small')
 
-#Plot the centroids and its values if text is true
-def plot_centroids(centroids,colors,marker,text=True):
+def plot_centroids(centroids,colors,marker):
     for c,color in zip(centroids,colors):
         plt.scatter(c[0], c[1], marker=marker, s=200, c=color)
-        if text:
-            plt.text(c[0]+0.03, c[1]-0.05, "("+str(c[0])+","+str(c[1])+")", color=color, fontsize='small')
+        plt.text(c[0]+0.03, c[1]-0.05, "("+str(c[0])+","+str(c[1])+")", color=color, fontsize='small')
 
 def dist(points,dims):
     dist = 0
@@ -67,7 +65,8 @@ def computer_kmeans(points,num_clusters,iterns,centeroids = None):
                     old_dist = curr_dist
             temp_output[index].append(points[j])
             temp_mask.append(index+1)
-        plot_points(points,temp_mask,'^',True)
+        print(temp_mask)
+        plot_points(points,temp_mask,'^')
         plt.savefig("output/task3/task_3_iter"+ str(i)+"_a"".jpg")
         plt.clf()
 
@@ -76,11 +75,10 @@ def computer_kmeans(points,num_clusters,iterns,centeroids = None):
             avg = [float(sum(col))/len(col) for col in zip(*temp_output[j])]
             print(centeroids[j],"avg = ",avg)
             if centeroids[j] != avg:
-                print("inside flags")
                 flag = True
                 centeroids[j] = avg
-        plot_centroids(centeroids,COLORS,'.',text=True)
-        plot_points(points,temp_mask,'^',True)
+        plot_centroids(centeroids,COLORS,'.')
+        plot_points(points,temp_mask,'^')
         plt.savefig("output/task3/task_3_iter"+ str(i)+"_b"".jpg")
         plt.clf()
     output = temp_output

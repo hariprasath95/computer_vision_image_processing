@@ -30,9 +30,8 @@ def drawlines(img1,img2,lines,pts1,pts2,color):
         x1,y1 = map(int, [c, -(r[2]+r[0]*c)/r[1] ])
         img1 = cv2.line(img1, (x0,y0), (x1,y1), color[i],1)
         img1 = cv2.circle(img2,tuple(pt1),5,color[i],-1)
-        img2 = cv2.circle(img1,tuple(pt2),5,color[i],-1)
         i = i+1
-    return img1,img2
+    return img1
 
 
 pts1 = []
@@ -67,11 +66,11 @@ for i in range(0,10):
 
 img1_lines = cv2.computeCorrespondEpilines(selected_point1.reshape(-1, 1, 2), 2, fundamentalmat)
 img1_lines = img1_lines.reshape(-1, 3)
-img1_lines1,image1_lines2 = drawlines(m1_clr,m2_clr,img1_lines,selected_point1,selected_point2,colors)
+img1_lines1 = drawlines(m1_clr,m2_clr,img1_lines,selected_point1,selected_point2,colors)
 
 img2_lines = cv2.computeCorrespondEpilines(selected_point2.reshape(-1, 1, 2), 2, fundamentalmat)
 img2_lines = img1_lines.reshape(-1, 3)
-img2_lines1,image2_lines2 = drawlines(m2_clr,m1_clr,img2_lines,selected_point2,selected_point1,colors)
+img2_lines1 = drawlines(m2_clr,m1_clr,img2_lines,selected_point2,selected_point1,colors)
 
 
 stereo = cv2.StereoBM_create(96, blockSize=17)
